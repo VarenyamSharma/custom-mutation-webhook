@@ -1,0 +1,41 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Go build output
+sourcecode/example-webhook
+sourcecode/webhook
+
+# Go test artifacts
+*.test
+*.out
+
+# Go module cache
+vendor/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# TLS / Certs
+*.pem
+*.crt
+*.key
+*.csr
+
+# Logs
+*.log
+
+# Kubernetes secrets / sensitive
+kubeconfig
+*.kubeconfig

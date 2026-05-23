@@ -1,0 +1,16 @@
+{
+  "CN": "Example Admission Controller CA",
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "IN",
+      "L": "Noida",
+      "O": "Example",
+      "OU": "Webhook",
+      "ST": "UP"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+# This specifies the API version and the type of Kubernetes resource.
+# A "MutatingWebhookConfiguration" tells Kubernetes to intercept certain requests
+# and send them to our custom server so we can modify (mutate) them before they are saved.
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: example-webhook # The name of this webhook configuration
+webhooks:
+  - name: example-webhook.default.svc # A unique identifier for this specific webhook
+    # Tells Kubernetes which version of the data format to send to our webhook
+    admissionReviewVersions:
+      - v1
+    # 'None' means our webhook doesn't make any permanent changes to other external systems
+    sideEffects: None
+    clientConfig:
+      # This block tells Kubernetes how to find and connect to our webhook server inside the cluster
+      service:  
+        name: example-webhook # The name of the Kubernetes Service pointing to our server
+        namespace: default    # The namespace where our Service lives
+        path: "/mutate"       # The URL path Kubernetes should send requests to (e.g., http://example-webhook/mutate)
+      # This is the security certificate used to verify the secure connection between Kubernetes and our webhook server.
+      caBundle: ${CA_PEM_B64}
+    rules:
+      # This section defines exactly WHEN Kubernetes should send a request to our webhook.
+      - apiGroups: [""]        # "" means the core Kubernetes API group
+        apiVersions: ["v1"]    # Watch for v1 resources
+        operations: ["CREATE"] # Only send a request when a resource is being CREATED
+        resources: ["pods"]    # Only send a request if the resource being created is a Pod
+    # If our webhook server is down or broken, 'Ignore' tells Kubernetes to just allow the Pod creation anyway.
+    # (If this was set to 'Fail', Kubernetes would block the Pod from being created)
+    failurePolicy: Ignore
